@@ -1,37 +1,65 @@
-user
-User_ID
-Name
-Password
+-- Create Users Table
+CREATE TABLE Users (
+    User_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
 
-badminton_Tournament
-Bad_Tour_ID
-Name
-Owner_User_ID
-Authorize_User_ID
-Location
-Date
-Status
+-- Create Badminton Tournament Table
+CREATE TABLE Badminton_Tournament (
+    Bad_Tour_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Owner_User_ID INT,
+    Location VARCHAR(100) NOT NULL,
+    Date DATE NOT NULL,
+    Status ENUM('Created', 'Scheduled', 'Completed') DEFAULT 'Created',
+    FOREIGN KEY (Owner_User_ID) REFERENCES Users(User_ID)
+);
 
-category
-Bad_Tour_ID
-Cat_ID
-Name 
-Team_Amount
+-- Create Tournament_Authorize_User Table
+CREATE TABLE Tournament_Authorize_User (
+    Bad_Tour_ID INT,
+    User_ID INT,
+    PRIMARY KEY (Bad_Tour_ID, User_ID),
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+);
 
-team
-Cat_ID
-Team_ID
-Team_Name
+-- Create Category Table
+CREATE TABLE Category (
+    Bad_Tour_ID INT,
+    Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Team_Amount INT NOT NULL,
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID)
+);
 
-match
-Bad_Tour_ID
-Cat_ID
-Match_ID
-Score_ID 
-TEAM_1_ID 
-TEAM_2_ID 
+-- Create Team Table
+CREATE TABLE Team (
+    Cat_ID INT,
+    Team_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Team_Name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID)
+);
 
-score
-Score_ID
-Player_1_Score
-Player_2_Score
+-- Create Score Table
+CREATE TABLE Score (
+    Score_ID INT,
+    Player_1_Score INT NOT NULL,
+    Player_2_Score INT NOT NULL
+);
+
+-- Create Matches Table
+CREATE TABLE Matches (
+    Bad_Tour_ID INT,
+    Cat_ID INT,
+    Match_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Team_1_ID INT,
+    Team_2_ID INT,
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
+    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID),
+    FOREIGN KEY (Score_ID) REFERENCES Score(Score_ID),
+    FOREIGN KEY (Team_1_ID) REFERENCES Team(Team_ID),
+    FOREIGN KEY (Team_2_ID) REFERENCES Team(Team_ID)
+);
