@@ -1,12 +1,21 @@
+-- Drop existing tables to avoid conflicts
+DROP TABLE IF EXISTS Matches;
+DROP TABLE IF EXISTS Score;
+DROP TABLE IF EXISTS Team;
+DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS Tournament_Authorize_User;
+DROP TABLE IF EXISTS Badminton_Tournament;
+DROP TABLE IF EXISTS Users;
+
 -- Create Users Table
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Users (
     User_ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Password VARCHAR(255) NOT NULL
 );
 
 -- Create Badminton Tournament Table
-CREATE TABLE Badminton_Tournament (
+CREATE TABLE IF NOT EXISTS Badminton_Tournament (
     Bad_Tour_ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Owner_User_ID INT,
@@ -17,7 +26,7 @@ CREATE TABLE Badminton_Tournament (
 );
 
 -- Create Tournament_Authorize_User Table
-CREATE TABLE Tournament_Authorize_User (
+CREATE TABLE IF NOT EXISTS Tournament_Authorize_User (
     Bad_Tour_ID INT,
     User_ID INT,
     PRIMARY KEY (Bad_Tour_ID, User_ID),
@@ -26,7 +35,7 @@ CREATE TABLE Tournament_Authorize_User (
 );
 
 -- Create Category Table
-CREATE TABLE Category (
+CREATE TABLE IF NOT EXISTS Category (
     Bad_Tour_ID INT,
     Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
@@ -35,7 +44,7 @@ CREATE TABLE Category (
 );
 
 -- Create Team Table
-CREATE TABLE Team (
+CREATE TABLE IF NOT EXISTS Team (
     Cat_ID INT,
     Team_ID INT AUTO_INCREMENT PRIMARY KEY,
     Team_Name VARCHAR(100) NOT NULL,
@@ -43,18 +52,18 @@ CREATE TABLE Team (
 );
 
 -- Create Score Table
-CREATE TABLE Score (
-    Score_ID INT,
+CREATE TABLE IF NOT EXISTS Score (
+    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
     Player_1_Score INT NOT NULL,
     Player_2_Score INT NOT NULL
 );
 
 -- Create Matches Table
-CREATE TABLE Matches (
+CREATE TABLE IF NOT EXISTS Matches (
     Bad_Tour_ID INT,
     Cat_ID INT,
     Match_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Score_ID INT,
     Team_1_ID INT,
     Team_2_ID INT,
     FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
