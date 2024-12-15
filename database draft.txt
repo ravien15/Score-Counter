@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS Category (
     Bad_Tour_ID INT,
     Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
-    Team_Amount INT NOT NULL,
     FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID)
 );
 
