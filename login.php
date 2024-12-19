@@ -5,28 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
-<body>
-    <form action="action_page.php" method="post">
-    <div class="container">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
+<body><?php
+require 'includes/config.php';
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-        <button type="submit">Login</button>
-        <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label>
-    </div>
+    $stmt = $pdo->prepare("SELECT * FROM Users WHERE Email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-    </form>
+    if ($user && password_verify($password, $user['Password'])) {
+        if ($user['Is_Verified']) {
+            session_start();
+            $_SESSION['user_id'] = $user['User_ID'];
+            header("Location: dashboard.php");
+        } else {
+            echo "Please verify your email before logging in.";
+        }
+    } else {
+        echo "Invalid email or password.";
+    }
+}
+?>
+<form method="POST">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+
 </body>
 </html>
 <?php
-    
+
 ?>

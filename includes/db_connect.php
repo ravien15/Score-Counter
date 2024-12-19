@@ -1,13 +1,15 @@
-<?php
-    $db_server = "localhost";
-    $db_user = "root";
-    $db_pass = "";
-    $db_name = "tournament_maker";
-    $conn = "";
 
-    try{
-        $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-    }catch(mysqli_sql_exception){
-        echo '<script>alert("Cannot Connect! Please try again!")</script>';
-    }
+<?php
+$host = 'localhost';
+$db = 'tournament_maker';
+$user = 'root';
+$pass = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
 ?>
