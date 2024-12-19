@@ -8,12 +8,14 @@ DROP TABLE IF EXISTS Badminton_Tournament;
 DROP TABLE IF EXISTS Users;
 
 -- Create Users Table
-CREATE TABLE IF NOT EXISTS Users (
-    User_ID INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR() NOT NULL,
-    Name VARCHAR(100) NOT NULL,
-    Password CHAR(255) NOT NULL,
-    reg_date datetime NOT NULL
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    verification_code VARCHAR(64) NOT NULL,
+    is_verified TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create Badminton Tournament Table
@@ -61,6 +63,85 @@ CREATE TABLE IF NOT EXISTS Score (
 
 -- Create Matches Table
 CREATE TABLE IF NOT EXISTS Matches (
+    Bad_Tour_ID INT,
+    Cat_ID INT,
+    Match_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Score_ID INT,
+    Team_1_ID INT,
+    Team_2_ID INT,
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
+    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID),
+    FOREIGN KEY (Score_ID) REFERENCES Score(Score_ID),
+    FOREIGN KEY (Team_1_ID) REFERENCES Team(Team_ID),
+    FOREIGN KEY (Team_2_ID) REFERENCES Team(Team_ID)
+);
+
+
+/
+/
+/UPDATE+
+/
+/
+
+-- Drop existing tables
+DROP TABLE IF EXISTS Matches, Score, Team, Category, Tournament_Authorize_User, Badminton_Tournament, Users;
+
+-- Create Users Table
+CREATE TABLE Users (
+    User_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Verification_Code VARCHAR(64) NOT NULL,
+    Is_Verified TINYINT(1) DEFAULT 0,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Badminton Tournament Table
+CREATE TABLE Badminton_Tournament (
+    Bad_Tour_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Owner_User_ID INT,
+    Location VARCHAR(100) NOT NULL,
+    Date DATE NOT NULL,
+    Status ENUM('Created', 'Scheduled', 'Completed') DEFAULT 'Created',
+    FOREIGN KEY (Owner_User_ID) REFERENCES Users(User_ID)
+);
+
+-- Create Tournament Authorize User Table
+CREATE TABLE Tournament_Authorize_User (
+    Bad_Tour_ID INT,
+    User_ID INT,
+    PRIMARY KEY (Bad_Tour_ID, User_ID),
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+);
+
+-- Create Category Table
+CREATE TABLE Category (
+    Bad_Tour_ID INT,
+    Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID)
+);
+
+-- Create Team Table
+CREATE TABLE Team (
+    Cat_ID INT,
+    Team_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Team_Name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID)
+);
+
+-- Create Score Table
+CREATE TABLE Score (
+    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Player_1_Score INT NOT NULL,
+    Player_2_Score INT NOT NULL
+);
+
+-- Create Matches Table
+CREATE TABLE Matches (
     Bad_Tour_ID INT,
     Cat_ID INT,
     Match_ID INT AUTO_INCREMENT PRIMARY KEY,

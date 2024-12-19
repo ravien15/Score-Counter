@@ -1,6 +1,7 @@
 <?php
 // Start the session
 session_start();
+require 'includes/db_connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@ session_start();
         <div class="container-fluid">
             <!-- Logo/Image -->
             <a class="navbar-brand" href="index.php">
-                <img src="assets/images/saitamahead.png" alt="Logo" style="width: 50px; height: 50px;">
+                <img src="includes/images/saitamahead.png" alt="Logo" style="width: 50px; height: 50px;">
             </a>
             
             <!-- Toggle Button for Mobile -->

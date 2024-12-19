@@ -2,7 +2,7 @@
     $db_server = "localhost";
     $db_user = "root";
     $db_pass = "";
-    $db_name = "tournament_db";
+    $db_name = "tournament_maker";
     $conn = "";
 
     try{
