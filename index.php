@@ -1,13 +1,17 @@
+<?php
+    include("header.php")
+?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Bootstrap Example</title>
+        <title>Home</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </head>
-    <header></header>
-    <body></body>
-    <footer></footer>
+    <body>
+        <h2>Home Page</h2>
+    </body>
 </html>
+<?php
+    include("footer.php")
+?>

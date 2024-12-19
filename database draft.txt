@@ -10,8 +10,10 @@ DROP TABLE IF EXISTS Users;
 -- Create Users Table
 CREATE TABLE IF NOT EXISTS Users (
     User_ID INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR() NOT NULL,
     Name VARCHAR(100) NOT NULL,
-    Password VARCHAR(255) NOT NULL
+    Password CHAR(255) NOT NULL,
+    reg_date datetime NOT NULL
 );
 
 -- Create Badminton Tournament Table
