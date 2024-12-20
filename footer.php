@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<body>
     <!-- Footer Section -->
 <footer class="bg-light text-center text-lg-start mt-5 border-top">
     <div class="container p-4">
@@ -9,7 +7,7 @@
             <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">About Us</h5>
                 <p>
-                    This platform is designed to manage badminton tournaments efficiently, providing live scores, schedules, and tournament details.
+                This platform is designed to manage badminton tournaments efficiently, currently only providing tournament creation and display tournament details. In the futures we'll provides function live scores, automation scheduling and hopefully other sports.
                 </p>
             </div>
 
@@ -44,6 +42,3 @@
 
 <!-- Include Font Awesome for Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-</body>
-</html>

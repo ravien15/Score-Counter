@@ -92,9 +92,6 @@ CREATE TABLE Users (
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(255) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
-    Verification_Code VARCHAR(64) NOT NULL,
-    Is_Verified TINYINT(1) DEFAULT 0,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create Badminton Tournament Table
