@@ -1,5 +1,5 @@
-    <!-- Footer Section -->
-<footer class="bg-light text-center text-lg-start mt-5 border-top">
+<!-- Footer Section -->
+<footer class="bg-light text-center text-lg-start mt-auto border-top">
     <div class="container p-4">
         <!-- Footer Links -->
         <div class="row">
@@ -7,7 +7,7 @@
             <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">About Us</h5>
                 <p>
-                This platform is designed to manage badminton tournaments efficiently, currently only providing tournament creation and display tournament details. In the futures we'll provides function live scores, automation scheduling and hopefully other sports.
+                    This platform is designed to manage badminton tournaments efficiently, currently only providing tournament creation and displaying tournament details. In the future, we'll provide live scores, automated scheduling, and hopefully other sports management features.
                 </p>
             </div>
 
@@ -35,10 +35,21 @@
 
     <!-- Copyright -->
     <div class="text-center p-3 bg-light border-top">
-        <a href="#" onclick="scrollToTop()" class="btn btn-secondary btn-sm">Back to Top</a>
         <p class="m-0 mt-3">&copy; 2024 Badminton Tournament Management. All rights reserved.</p>
     </div>
 </footer>
 
 <!-- Include Font Awesome for Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    footer {
+        margin-top: auto;
+    }
+</style>

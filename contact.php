@@ -22,9 +22,13 @@
         body{
             background-color: white;
         }
+        .contact-section{
+            background-color: white;
+        }
     </style>
 </head>
-<body><div class="contact-section text-center">
+<body>
+    <div class="contact-section text-center">
         <div class="container">
             <h1 class="mb-4">Contact Us</h1>
             <div class="row justify-content-center">
@@ -45,38 +49,48 @@
         </div>
     </div>
 
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $name = trim($_POST['name']);
-        $feedback = trim($_POST['feedback']);
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name']);
+    $feedback = trim($_POST['feedback']);
 
+    try {
         // Validate inputs
         if (empty($name) || empty($feedback)) {
-            echo "<div class='text-center text-danger mt-3'>Both fields are required!</div>";
-        } elseif (strlen($name) > 255 || strlen($feedback) > 1000) {
-            echo "<div class='text-center text-danger mt-3'>Input exceeds the allowed length!</div>";
-        } else {
-            // Sanitize inputs
-            $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-            $feedback = htmlspecialchars($feedback, ENT_QUOTES, 'UTF-8');
+            throw new Exception("Both fields are required!");
+        } 
 
-            // Insert data into feedback table
-            $stmt = $conn->prepare("INSERT INTO feedback (name, feedback) VALUES (?, ?)");
-            $stmt->bind_param("ss", $name, $feedback);
-
-            if ($stmt->execute()) {
-                echo "<div class='text-center text-success mt-3'>Feedback submitted successfully!</div>";
-            } else {
-                echo "<div class='text-center text-danger mt-3'>Error: " . $stmt->error . "</div>";
-            }
-
-            $stmt->close();
-            $conn->close();
+        if (strlen($name) > 255 || strlen($feedback) > 1000) {
+            throw new Exception("Input exceeds the allowed length!");
         }
-    }
-    ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        // Sanitize inputs
+        $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $feedback = htmlspecialchars($feedback, ENT_QUOTES, 'UTF-8');
+
+        // Insert data into feedback table
+        $stmt = $conn->prepare("INSERT INTO feedback (name, feedback) VALUES (?, ?)");
+        if (!$stmt) {
+            throw new Exception("Failed to prepare statement: " . $conn->error);
+        }
+
+        $stmt->bind_param("ss", $name, $feedback);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error executing statement: " . $stmt->error);
+        }
+
+        echo "<div class='text-center text-success mt-3'>Feedback submitted successfully!</div>";
+
+        $stmt->close();
+        $conn->close();
+    } catch (Exception $e) {
+        echo "<div class='text-center text-danger mt-3'>Error: " . $e->getMessage() . "</div>";
+    }
+}
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
