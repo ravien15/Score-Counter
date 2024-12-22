@@ -15,7 +15,7 @@
             <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                 <h5 class="text-uppercase">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="index.php" class="text-dark">Home</a></li>
+                    <li><a href="home.php" class="text-dark">Home</a></li>
                     <li><a href="aboutUs.php" class="text-dark">About Us</a></li>
                     <li><a href="profile.php" class="text-dark">Profile</a></li>
                     <li><a href="contact.php" class="text-dark">Contact</a></li>
@@ -35,14 +35,19 @@
 
     <!-- Copyright -->
     <div class="text-center p-3 bg-light border-top">
-        <p class="m-0 mt-3">&copy; 2024 Badminton Tournament Management. All rights reserved.</p>
-    </div>
+    <p class="m-0 mt-3">&copy; 2024 Badminton Tournament <a href="adminLogin.php" class="no-link">Management</a>. All rights reserved.</p>
+</div>
 </footer>
 
 <!-- Include Font Awesome for Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <style>
+    /* Remove default hyperlink styles */
+    .no-link {
+        text-decoration: none;
+        color: inherit; /* Inherit the color of the surrounding text */
+    }
     html, body {
         height: 100%;
         margin: 0;
