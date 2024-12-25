@@ -107,61 +107,34 @@ CREATE TABLE feedback (
     time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- Create Badminton Tournament Table
-CREATE TABLE Badminton_Tournament (
-    Bad_Tour_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
-    Owner_User_ID INT,
-    Location VARCHAR(100) NOT NULL,
-    Date DATE NOT NULL,
-    Status ENUM('Created', 'Scheduled', 'Completed') DEFAULT 'Created',
-    FOREIGN KEY (Owner_User_ID) REFERENCES Users(User_ID)
-);
-
--- Create Tournament Authorize User Table
-CREATE TABLE Tournament_Authorize_User (
-    Bad_Tour_ID INT,
-    User_ID INT,
-    PRIMARY KEY (Bad_Tour_ID, User_ID),
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
-);
-
--- Create Category Table
-CREATE TABLE Category (
-    Bad_Tour_ID INT,
-    Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID)
-);
-
--- Create Team Table
-CREATE TABLE Team (
-    Cat_ID INT,
-    Team_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Team_Name VARCHAR(100) NOT NULL,
-    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID)
-);
-
--- Create Score Table
-CREATE TABLE Score (
-    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Player_1_Score INT NOT NULL,
-    Player_2_Score INT NOT NULL
+-- Create Competitions Table
+CREATE TABLE Competitions (
+    Competition_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Competition_Name VARCHAR(100) NOT NULL,
+    Created_By INT NOT NULL,
+    Start_Date DATE NOT NULL,
+    End_Date DATE,
+    Location VARCHAR(255) NOT NULL,
+    FOREIGN KEY (Created_By) REFERENCES Users(User_ID) ON DELETE CASCADE
 );
 
 -- Create Matches Table
 CREATE TABLE Matches (
-    Bad_Tour_ID INT,
-    Cat_ID INT,
     Match_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Score_ID INT,
-    Team_1_ID INT,
-    Team_2_ID INT,
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
-    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID),
-    FOREIGN KEY (Score_ID) REFERENCES Score(Score_ID),
-    FOREIGN KEY (Team_1_ID) REFERENCES Team(Team_ID),
-    FOREIGN KEY (Team_2_ID) REFERENCES Team(Team_ID)
+    Competition_ID INT NOT NULL,
+    Match_Date DATETIME NOT NULL,
+    Player1_Name VARCHAR(100) NOT NULL,
+    Player2_Name VARCHAR(100) NOT NULL,
+    Winner VARCHAR(100),
+    FOREIGN KEY (Competition_ID) REFERENCES Competitions(Competition_ID) ON DELETE CASCADE
+);
+
+-- Create Match Scores Table
+CREATE TABLE Match_Scores (
+    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
+    Match_ID INT NOT NULL,
+    Player1_Score INT DEFAULT 0,
+    Player2_Score INT DEFAULT 0,
+    Updated_At DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (Match_ID) REFERENCES Matches(Match_ID) ON DELETE CASCADE
 );
