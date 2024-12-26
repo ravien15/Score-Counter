@@ -1,88 +1,3 @@
--- Drop existing tables to avoid conflicts
-DROP TABLE IF EXISTS Matches;
-DROP TABLE IF EXISTS Score;
-DROP TABLE IF EXISTS Team;
-DROP TABLE IF EXISTS Category;
-DROP TABLE IF EXISTS Tournament_Authorize_User;
-DROP TABLE IF EXISTS Badminton_Tournament;
-DROP TABLE IF EXISTS Users;
-
--- Create Users Table
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    verification_code VARCHAR(64) NOT NULL,
-    is_verified TINYINT(1) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create Badminton Tournament Table
-CREATE TABLE IF NOT EXISTS Badminton_Tournament (
-    Bad_Tour_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
-    Owner_User_ID INT,
-    Location VARCHAR(100) NOT NULL,
-    Date DATE NOT NULL,
-    Status ENUM('Created', 'Scheduled', 'Completed') DEFAULT 'Created',
-    FOREIGN KEY (Owner_User_ID) REFERENCES Users(User_ID)
-);
-
--- Create Tournament_Authorize_User Table
-CREATE TABLE IF NOT EXISTS Tournament_Authorize_User (
-    Bad_Tour_ID INT,
-    User_ID INT,
-    PRIMARY KEY (Bad_Tour_ID, User_ID),
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
-);
-
--- Create Category Table
-CREATE TABLE IF NOT EXISTS Category (
-    Bad_Tour_ID INT,
-    Cat_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID)
-);
-
--- Create Team Table
-CREATE TABLE IF NOT EXISTS Team (
-    Cat_ID INT,
-    Team_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Team_Name VARCHAR(100) NOT NULL,
-    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID)
-);
-
--- Create Score Table
-CREATE TABLE IF NOT EXISTS Score (
-    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Player_1_Score INT NOT NULL,
-    Player_2_Score INT NOT NULL
-);
-
--- Create Matches Table
-CREATE TABLE IF NOT EXISTS Matches (
-    Bad_Tour_ID INT,
-    Cat_ID INT,
-    Match_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Score_ID INT,
-    Team_1_ID INT,
-    Team_2_ID INT,
-    FOREIGN KEY (Bad_Tour_ID) REFERENCES Badminton_Tournament(Bad_Tour_ID),
-    FOREIGN KEY (Cat_ID) REFERENCES Category(Cat_ID),
-    FOREIGN KEY (Score_ID) REFERENCES Score(Score_ID),
-    FOREIGN KEY (Team_1_ID) REFERENCES Team(Team_ID),
-    FOREIGN KEY (Team_2_ID) REFERENCES Team(Team_ID)
-);
-
-
-/
-/
-/UPDATE+
-/
-/
-
 -- Drop existing tables
 DROP TABLE IF EXISTS Matches, Score, Team, Category, Tournament_Authorize_User, Badminton_Tournament, Users;
 
@@ -118,23 +33,15 @@ CREATE TABLE Competitions (
     FOREIGN KEY (Created_By) REFERENCES Users(User_ID) ON DELETE CASCADE
 );
 
--- Create Matches Table
+-- Modify Matches Table to include scores
 CREATE TABLE Matches (
     Match_ID INT AUTO_INCREMENT PRIMARY KEY,
     Competition_ID INT NOT NULL,
     Match_Date DATETIME NOT NULL,
     Player1_Name VARCHAR(100) NOT NULL,
     Player2_Name VARCHAR(100) NOT NULL,
-    Winner VARCHAR(100),
+    Match_Time TIME NOT NULL,
+    Player1_Score INT DEFAULT 0,  -- Score for Player 1
+    Player2_Score INT DEFAULT 0,  -- Score for Player 2
     FOREIGN KEY (Competition_ID) REFERENCES Competitions(Competition_ID) ON DELETE CASCADE
-);
-
--- Create Match Scores Table
-CREATE TABLE Match_Scores (
-    Score_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Match_ID INT NOT NULL,
-    Player1_Score INT DEFAULT 0,
-    Player2_Score INT DEFAULT 0,
-    Updated_At DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (Match_ID) REFERENCES Matches(Match_ID) ON DELETE CASCADE
 );
