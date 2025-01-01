@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_match'])) {
                         <tr>
                             <td><?= htmlspecialchars($match['Player1_Name']) ?></td>
                             <td><?= htmlspecialchars($match['Player2_Name']) ?></td>
-                            <td><?= htmlspecialchars($match['Match_Date']) ?></td>
+                            <td><?= date("Y-m-d", strtotime($match['Match_Date'])) ?></td>
                             <td><?= htmlspecialchars($match['Match_Time']) ?></td>
                             <td>
                                 <?= htmlspecialchars($match['Player1_Score']) ?> - <?= htmlspecialchars($match['Player2_Score']) ?>
@@ -186,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_match'])) {
         data-player2="<?= htmlspecialchars($match['Player2_Name']) ?>"
         data-score1="<?= htmlspecialchars($match['Player1_Score']) ?>"
         data-score2="<?= htmlspecialchars($match['Player2_Score']) ?>"
-        data-date="<?= htmlspecialchars($match['Match_Date']) ?>"
+        data-date="<?= date("Y-m-d", strtotime($match['Match_Date'])) ?>"
         data-time="<?= htmlspecialchars($match['Match_Time']) ?>"
     >
         Edit
